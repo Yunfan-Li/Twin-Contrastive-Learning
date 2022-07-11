@@ -38,8 +38,8 @@ The following command is used for boosting on CIFAR-10 with a 4-gpu machine,
 
 > OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=4 boost.py
 
-## Clustering On ImageNet
-To clustering datasets like ImageNet with a large number of classes, a reasonable batch size is needed. However, considering the gpu memory consumption, we recommend inheriting the moco v2 pretrained model (https://dl.fbaipublicfiles.com/moco/moco_checkpoints/moco_v2_800ep/moco_v2_800ep_pretrain.pth.tar) and freezing part of the network parameters (see details in model.py).
+## Clustering on ImageNet
+To clustering datasets like ImageNet with a large number of classes, a reasonable batch size is needed. However, considering the gpu memory consumption, we recommend inheriting the moco v2 pretrained model (https://dl.fbaipublicfiles.com/moco/moco_checkpoints/moco_v2_800ep/moco_v2_800ep_pretrain.pth.tar) and freezing part of the network parameters (see details in the manuscript and model.py).
 
 # Dataset
 
