@@ -168,8 +168,8 @@ class InstanceLossBoost(nn.Module):
         tau=0.5,
         multiplier=2,
         distributed=False,
-        alpha=0.9,
-        gamma=0.1,
+        alpha=0.99,
+        gamma=0.5,
         cluster_num=10,
     ):
         super().__init__()
