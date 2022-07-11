@@ -51,7 +51,14 @@ To run TCL on ImageNet and its subsets, you need to prepare the data and pass th
 
 If you find TCL useful in your research, please consider citing:
 ```
-
+@article{li2022tcl,
+  abbr={IJCV},
+  title={Twin Contrastive Learning for Online Clustering},
+  author={Li Yunfan and Yang Mouxing and Peng Dezhong and Li Taihao and Huang Jiantao and Peng Xi},
+  journal={International Journal of Computer Vision},
+  year={2022},
+  publisher={Springer}
+}
 ```
 
 or the previous conference version
