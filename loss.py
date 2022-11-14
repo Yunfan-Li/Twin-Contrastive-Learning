@@ -242,11 +242,11 @@ class InstanceLossBoost(nn.Module):
             ]
             # sort it to [<proc0_aug0>, <proc1_aug0>, ...] that simply means [<batch_aug0>, <batch_aug1>, ...] as expected below
             z_sorted = []
-            pesudo_label_sorted = []
+            pseudo_label_sorted = []
             for m in range(self.multiplier):
                 for i in range(dist.get_world_size()):
                     z_sorted.append(z_list[i * self.multiplier + m])
-                    pesudo_label_sorted.append(
+                    pseudo_label_sorted.append(
                         pseudo_label_list[i * self.multiplier + m]
                     )
             z_i = torch.cat(
@@ -255,7 +255,7 @@ class InstanceLossBoost(nn.Module):
             z_j = torch.cat(
                 z_sorted[int(self.multiplier * dist.get_world_size() / 2) :], dim=0
             )
-            pseudo_label = torch.cat(pesudo_label_sorted, dim=0,)
+            pseudo_label = torch.cat(pseudo_label_sorted, dim=0,)
             n = z_i.shape[0]
 
         invalid_index = pseudo_label == -1
@@ -327,34 +327,34 @@ class ClusterLossBoost(nn.Module):
     def forward(self, c, pseudo_label):
         if self.distributed:
             # c_list = [torch.zeros_like(c) for _ in range(dist.get_world_size())]
-            pesudo_label_list = [
+            pseudo_label_list = [
                 torch.zeros_like(pseudo_label) for _ in range(dist.get_world_size())
             ]
             # all_gather fills the list as [<proc0>, <proc1>, ...]
             # c_list = diffdist.functional.all_gather(c_list, c)
-            pesudo_label_list = diffdist.functional.all_gather(
-                pesudo_label_list, pseudo_label
+            pseudo_label_list = diffdist.functional.all_gather(
+                pseudo_label_list, pseudo_label
             )
             # split it into [<proc0_aug0>, <proc0_aug1>, ..., <proc0_aug(m-1)>, <proc1_aug(m-1)>, ...]
             # c_list = [chunk for x in c_list for chunk in x.chunk(self.multiplier)]
-            pesudo_label_list = [
-                chunk for x in pesudo_label_list for chunk in x.chunk(self.multiplier)
+            pseudo_label_list = [
+                chunk for x in pseudo_label_list for chunk in x.chunk(self.multiplier)
             ]
             # sort it to [<proc0_aug0>, <proc1_aug0>, ...] that simply means [<batch_aug0>, <batch_aug1>, ...] as expected below
             # c_sorted = []
-            pesudo_label_sorted = []
+            pseudo_label_sorted = []
             for m in range(self.multiplier):
                 for i in range(dist.get_world_size()):
                     # c_sorted.append(c_list[i * self.multiplier + m])
-                    pesudo_label_sorted.append(
-                        pesudo_label_list[i * self.multiplier + m]
+                    pseudo_label_sorted.append(
+                        pseudo_label_list[i * self.multiplier + m]
                     )
             # c = torch.cat(c_sorted, dim=0)
-            pesudo_label_all = torch.cat(pesudo_label_sorted, dim=0)
-        pseudo_index = pesudo_label_all != -1
-        pesudo_label_all = pesudo_label_all[pseudo_index]
-        idx, counts = torch.unique(pesudo_label_all, return_counts=True)
-        freq = pesudo_label_all.shape[0] / counts.float()
+            pseudo_label_all = torch.cat(pseudo_label_sorted, dim=0)
+        pseudo_index = pseudo_label_all != -1
+        pseudo_label_all = pseudo_label_all[pseudo_index]
+        idx, counts = torch.unique(pseudo_label_all, return_counts=True)
+        freq = pseudo_label_all.shape[0] / counts.float()
         weight = torch.ones(self.cluster_num).to(c.device)
         weight[idx] = freq
         pseudo_index = pseudo_label != -1
