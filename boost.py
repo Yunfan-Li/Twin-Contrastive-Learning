@@ -267,7 +267,7 @@ def main(args):
     pseudo_labels = -torch.ones(dataset_train.__len__(), dtype=torch.long)
     start_time = time.time()
     max_accuracy = 0.0
-    for epoch in range(args.start_epoch, args.epochs):
+    for epoch in range(args.start_epoch, args.start_epoch + args.epochs):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
         train_stats, pseudo_labels = boost_one_epoch(
