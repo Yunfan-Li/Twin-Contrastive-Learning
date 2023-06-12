@@ -236,8 +236,8 @@ class Augmentation:
 def build_transform(is_train, args):
     if args.dataset == "CIFAR-10":
         augmentation = Augmentation(
-            img_size=256,
-            val_img_size=224,
+            img_size=224,
+            val_img_size=256,
             s=0.5,
             num_aug=4,
             cutout_holes=1,
@@ -247,8 +247,8 @@ def build_transform(is_train, args):
         )
     elif args.dataset == "CIFAR-100":
         augmentation = Augmentation(
-            img_size=256,
-            val_img_size=224,
+            img_size=224,
+            val_img_size=256,
             s=0.5,
             num_aug=4,
             cutout_holes=1,
@@ -258,8 +258,8 @@ def build_transform(is_train, args):
         )
     elif args.dataset == "ImageNet-10" or args.dataset == "ImageNet":
         augmentation = Augmentation(
-            img_size=256,
-            val_img_size=224,
+            img_size=224,
+            val_img_size=256,
             s=0.5,
             num_aug=4,
             cutout_holes=1,
